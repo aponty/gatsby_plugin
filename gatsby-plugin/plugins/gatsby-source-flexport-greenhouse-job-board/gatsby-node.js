@@ -43,11 +43,21 @@ exports.sourceNodes = async (gatsby, pluginOptions) => {
   try {
     const {actions} = gatsby;
     const {createNode} = actions;
-    const {boardToken, activeEnv} = pluginOptions;
+    const {
+      boardToken,
+      activeEnv,
+      isGatsbyCloud,
+      isNetlifyPreview,
+    } = pluginOptions;
     let offices, departments, jobs;
     let nodes;
 
-    if (activeEnv === "development") {
+    if (activeEnv === "development" || isGatsbyCloud || isNetlifyPreview) {
+      log(
+        `${chalk.blue(
+          "info"
+        )} isGatsbyCloud: ${isGatsbyCloud}, isNetlifyPreview: ${isNetlifyPreview}`
+      );
       try {
         log(`${chalk.blue("info")} Using cached greenhouse data`);
         ({offices, departments, jobs} = readCache());
